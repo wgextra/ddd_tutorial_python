@@ -54,7 +54,7 @@ class ICircleFactory(metaclass=ABCMeta):
     def create(self,circleName,owner):
         pass
 
-class CircleService:
+class circleService:
     def __init__(self,ICircleRepository):
         self.circleRepository = ICircleRepository
     def exists(self,circle):
