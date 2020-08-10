@@ -77,3 +77,19 @@ class circleCreateCommand:
     def __init__(self,userId,name):
         self.userId = userId
         self.name = name
+
+class circleApplicationService:
+    def __init__(self,circleFactory,circleRepository,circleService,userRepository):
+        self.circleFactory = circleFactory
+        self.circleRepository = circleRepository
+        self.circleService = circleService
+        self.userRepository = userRepository
+    def create(self,command):
+        if self.userRepository.findById(command.userId) == None:
+            raise ValueError("owner user not found.")
+        circle = circleName(command.name)
+        if self.circleService.exists(circle):
+            raise ValueError("name already used.")
+        self.circleRepository.save()
+
+        
