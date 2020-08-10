@@ -1,5 +1,6 @@
 import uuid
-
+from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 # value object for circle identifier
 class circleId:
@@ -26,3 +27,29 @@ class user:
         else:
             self.id = id
             self.name = name
+
+# entity for circle
+class circle:
+    def __init__(self,id,name,owner,members):
+        self.id = id
+        self.name = name
+        self.owner = owner
+        self.members = members
+
+# interface for CircleRepository
+class ICircleRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def save(self):
+        pass
+    @abstractmethod
+    def findById(self,circleId):
+        pass
+    @abstractmethod
+    def findByName(self,circleName):
+        pass 
+
+class ICircleFactory(metaclass=ABCMeta):
+    @abstractmethod
+    def create(self,circleName,owner):
+        pass
+
