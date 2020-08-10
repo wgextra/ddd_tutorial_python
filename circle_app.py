@@ -48,6 +48,18 @@ class ICircleRepository(metaclass=ABCMeta):
     def findByName(self,circleName):
         pass 
 
+# interface for UserRepository
+class IUserRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def save(self):
+        pass
+    @abstractmethod
+    def findById(self,userId):
+        pass
+    @abstractmethod
+    def findByName(self,userName):
+        pass 
+
 # interface for CircleFactory
 class ICircleFactory(metaclass=ABCMeta):
     @abstractmethod
