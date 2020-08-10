@@ -71,11 +71,18 @@ class IUserRepository(metaclass=ABCMeta):
     def findByName(self,userName):
         pass 
 
+# interface for UserRepository
+class ICircleInviteRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def save(self):
+        pass
+    
 # interface for CircleFactory
 class ICircleFactory(metaclass=ABCMeta):
     @abstractmethod
     def create(self,circleName,owner):
         pass
+    
 
 class circleService:
     def __init__(self,ICircleRepository):
