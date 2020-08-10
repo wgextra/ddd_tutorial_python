@@ -1,8 +1,9 @@
+import uuid
+
+
 # value object for circle identifier
 class circleId:
     def __init__(self,value):
-        if value == None:
-            raise ValueError(value)
         self.Value = value
 
 # value object for cicle name
@@ -15,3 +16,13 @@ class circleName:
         self.Value = value
     def equals(self,otherCircleName):
         return otherCircleName.Value == self.Value
+
+# entity for user
+class user:
+    def __init__(self,name,id=None):
+        if id == None:
+            self.id = str(uuid.uuid4())
+            self.name = name
+        else:
+            self.id = id
+            self.name = name
