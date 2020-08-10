@@ -4,6 +4,7 @@ from circle_app import circleName
 from circle_app import user
 from circle_app import circle
 from circle_app import circleCreateCommand
+from circle_app import circleJoinCommand
 
 def test_circle_id():
     ci = circleId(123)
@@ -41,4 +42,8 @@ def test_circle_create_command():
     ccc = circleCreateCommand("testUserId","testCircleName")
     assert ccc.userId == "testUserId"
     assert ccc.name == "testCircleName"
-    
+
+def test_circle_join_command():
+    ccc = circleJoinCommand("testUserId","testCircleId")
+    assert ccc.userId == "testUserId"
+    assert ccc.circleId == "testCircleId"

@@ -78,6 +78,11 @@ class circleCreateCommand:
         self.userId = userId
         self.name = name
 
+class circleJoinCommand:
+    def __init__(self,userId,circleId):
+        self.userId = userId
+        self.circleId = circleId
+
 class circleApplicationService:
     def __init__(self,circleFactory,circleRepository,circleService,userRepository):
         self.circleFactory = circleFactory
@@ -91,5 +96,3 @@ class circleApplicationService:
         if self.circleService.exists(circle):
             raise ValueError("name already used.")
         self.circleRepository.save()
-
-        
