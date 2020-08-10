@@ -2,6 +2,7 @@ import pytest
 from circle_app import circleId
 from circle_app import circleName
 from circle_app import user
+from circle_app import circle
 
 def test_circle_id():
     ci = circleId(123)
@@ -27,3 +28,10 @@ def test_user():
     us2 = user(name="testUser2",id="testId")
     assert us2.name == "testUser2"
     assert us2.id == "testId"
+
+def test_circle():
+    ccl = circle(id="testCircleId",name="testCircleName",owner="testCircleOwnerId",members=["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3"])
+    assert ccl.id == "testCircleId"
+    assert ccl.name == "testCircleName"
+    assert ccl.owner == "testCircleOwnerId"
+    assert ccl.members == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3"]

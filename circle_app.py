@@ -48,8 +48,15 @@ class ICircleRepository(metaclass=ABCMeta):
     def findByName(self,circleName):
         pass 
 
+# interface for CircleFactory
 class ICircleFactory(metaclass=ABCMeta):
     @abstractmethod
     def create(self,circleName,owner):
         pass
 
+class CircleService:
+    def __init__(self,ICircleRepository):
+        self.circleRepository = ICircleRepository
+    def exists(self,circle):
+        duplicate = self.circleRepository.findByName(circle.name)
+        return duplicate != None
