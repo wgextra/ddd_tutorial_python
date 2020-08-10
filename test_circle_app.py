@@ -3,6 +3,7 @@ from circle_app import circleId
 from circle_app import circleName
 from circle_app import user
 from circle_app import circle
+from circle_app import circleCreateCommand
 
 def test_circle_id():
     ci = circleId(123)
@@ -35,3 +36,9 @@ def test_circle():
     assert ccl.name == "testCircleName"
     assert ccl.owner == "testCircleOwnerId"
     assert ccl.members == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3"]
+
+def test_circle_create_command():
+    ccc = circleCreateCommand("testUserId","testCircleName")
+    assert ccc.userId == "testUserId"
+    assert ccc.name == "testCircleName"
+    

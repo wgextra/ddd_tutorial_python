@@ -60,3 +60,8 @@ class circleService:
     def exists(self,circle):
         duplicate = self.circleRepository.findByName(circle.name)
         return duplicate != None
+
+class circleCreateCommand:
+    def __init__(self,userId,name):
+        self.userId = userId
+        self.name = name
