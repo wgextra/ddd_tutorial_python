@@ -89,10 +89,21 @@ class circleApplicationService:
         self.circleRepository = circleRepository
         self.circleService = circleService
         self.userRepository = userRepository
-    def create(self,command):
-        if self.userRepository.findById(command.userId) == None:
+
+    def create(self,circleCreateCommand):
+        if self.userRepository.findById(circleCreateCommand.userId) == None:
             raise ValueError("owner user not found.")
-        circle = circleName(command.name)
-        if self.circleService.exists(circle):
+        if self.circleService.exists(circleCreateCommand.name) == True:
             raise ValueError("name already used.")
+        self.circleRepository.save()
+
+    def join(self,circleJoinCommand):
+        if self.userRepository.findById(circleJoinCommand.userId) == None:
+            raise ValueError("user not found.")
+        circle = self.circleRepository.findById(circleJoinCommand.circleId)
+        if circle == None:
+            raise ValueError("circle not found.")
+        if len(circle.members) >= 29:
+            raise ValueError("circle is full.")
+        circle.members.append(circleJoinCommand.userId)
         self.circleRepository.save()
