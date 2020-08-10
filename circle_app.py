@@ -34,6 +34,11 @@ class circle:
         self.name = name
         self.owner = owner
         self.members = members
+    def join(self,member):
+        if len(self.members) >= 29:
+            raise ValueError("circle is full.")
+        self.members.append(member)
+
 
 # entity for circleInvitation
 class circleInvitation:
@@ -126,9 +131,7 @@ class circleApplicationService:
         circle = self.circleRepository.findById(circleJoinCommand.circleId)
         if circle == None:
             raise ValueError("circle not found.")
-        if len(circle.members) >= 29:
-            raise ValueError("circle is full.")
-        circle.members.append(circleJoinCommand.userId)
+        circle.join(circleJoinCommand.userId)
         self.circleRepository.save()
 
     def invite(self,circleInviteCommand):
@@ -141,8 +144,5 @@ class circleApplicationService:
         circle = self.circleRepository.findById(circleInviteCommand.circleId)
         if circle == None:
             raise ValueError("circle not found.")
-        # TODO condition leaked. fix it.
-        if len(circle.members) >= 29:
-            raise ValueError("circle is full.")
         circleInvite = circleInvitation(fromUserId,toUserId,circle)
         self.circleRepository.save(circleInvite)

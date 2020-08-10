@@ -46,11 +46,13 @@ def test_circle_invitation():
     assert ci2.id == "testInvitationID"
 
 def test_circle():
-    ccl = circle(id="testCircleId",name="testCircleName",owner="testCircleOwnerId",members=["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3"])
+    ccl = circle(id="testCircleId",name="testCircleName",owner="testCircleOwnerId",members=[user("testCircleMemberId1"),user("testCircleMemberId2"),user("testCircleMemberId3")])
     assert ccl.id == "testCircleId"
     assert ccl.name == "testCircleName"
     assert ccl.owner == "testCircleOwnerId"
-    assert ccl.members == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3"]
+    assert [member.name for member in ccl.members] == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3"]
+    ccl.join(user("testCircleMemberId4"))
+    assert [member.name for member in ccl.members] == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3","testCircleMemberId4"]
 
 def test_circle_create_command():
     ccc = circleCreateCommand("testUserId","testCircleName")
