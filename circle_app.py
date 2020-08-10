@@ -49,7 +49,7 @@ class circleInvitation:
 # interface for CircleRepository
 class ICircleRepository(metaclass=ABCMeta):
     @abstractmethod
-    def save(self):
+    def save(self,circle):
         pass
     @abstractmethod
     def findById(self,circleId):
@@ -61,7 +61,7 @@ class ICircleRepository(metaclass=ABCMeta):
 # interface for UserRepository
 class IUserRepository(metaclass=ABCMeta):
     @abstractmethod
-    def save(self):
+    def save(self,user):
         pass
     @abstractmethod
     def findById(self,userId):
@@ -73,7 +73,7 @@ class IUserRepository(metaclass=ABCMeta):
 # interface for UserRepository
 class ICircleInviteRepository(metaclass=ABCMeta):
     @abstractmethod
-    def save(self):
+    def save(self,circleInvite):
         pass
     
 # interface for CircleFactory
@@ -141,7 +141,8 @@ class circleApplicationService:
         circle = self.circleRepository.findById(circleInviteCommand.circleId)
         if circle == None:
             raise ValueError("circle not found.")
+        # TODO condition leaked. fix it.
         if len(circle.members) >= 29:
             raise ValueError("circle is full.")
-        circle.members.append(circleInviteCommand.toUserId)
-        self.circleRepository.save()
+        circleInvite = circleInvitation(fromUserId,toUserId,circle)
+        self.circleRepository.save(circleInvite)
