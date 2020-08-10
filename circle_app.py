@@ -36,6 +36,17 @@ class circle:
         self.owner = owner
         self.members = members
 
+# entity for circleInvitation
+class circleInvitation:
+    def __init__(self,fromUserId,toUserId,circleId,id=None):
+        if id == None:
+            self.id = str(uuid.uuid4())
+        else:
+            self.id = id
+        self.fromUserId = fromUserId
+        self.toUserId = toUserId
+        self.circleId = circleId
+
 # interface for CircleRepository
 class ICircleRepository(metaclass=ABCMeta):
     @abstractmethod
@@ -84,9 +95,9 @@ class circleJoinCommand:
         self.circleId = circleId
 
 class circleInviteCommand:
-    def __init__(self,fromUserId,invitedUserId,circleId):
+    def __init__(self,fromUserId,toUserId,circleId):
         self.fromUserId = fromUserId
-        self.invitedUserId = invitedUserId
+        self.toUserId = toUserId
         self.circleId = circleId
 
 class circleApplicationService:
@@ -112,4 +123,19 @@ class circleApplicationService:
         if len(circle.members) >= 29:
             raise ValueError("circle is full.")
         circle.members.append(circleJoinCommand.userId)
+        self.circleRepository.save()
+
+    def invite(self,circleInviteCommand):
+        fromUserId = self.userRepository.findById(circleInviteCommand.fromUserId)
+        if fromUserId == None:
+            raise ValueError("inviting user not found.")
+        toUserId = self.userRepository.findById(circleInviteCommand.toUserId)
+        if toUserId == None:
+            raise ValueError("invited user not found.")
+        circle = self.circleRepository.findById(circleInviteCommand.circleId)
+        if circle == None:
+            raise ValueError("circle not found.")
+        if len(circle.members) >= 29:
+            raise ValueError("circle is full.")
+        circle.members.append(circleInviteCommand.toUserId)
         self.circleRepository.save()
