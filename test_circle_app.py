@@ -5,6 +5,7 @@ from circle_app import user
 from circle_app import circle
 from circle_app import circleCreateCommand
 from circle_app import circleJoinCommand
+from circle_app import circleInviteCommand
 
 def test_circle_id():
     ci = circleId(123)
@@ -44,6 +45,12 @@ def test_circle_create_command():
     assert ccc.name == "testCircleName"
 
 def test_circle_join_command():
-    ccc = circleJoinCommand("testUserId","testCircleId")
-    assert ccc.userId == "testUserId"
-    assert ccc.circleId == "testCircleId"
+    cjc = circleJoinCommand("testUserId","testCircleId")
+    assert cjc.userId == "testUserId"
+    assert cjc.circleId == "testCircleId"
+
+def test_circle_invite_command():
+    cic = circleInviteCommand("testFromUserId","testInvitedUserId","testCircleId")
+    assert cic.fromUserId == "testFromUserId"
+    assert cic.invitedUserId == "testInvitedUserId"
+    assert cic.circleId == "testCircleId"

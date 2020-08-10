@@ -83,6 +83,12 @@ class circleJoinCommand:
         self.userId = userId
         self.circleId = circleId
 
+class circleInviteCommand:
+    def __init__(self,fromUserId,invitedUserId,circleId):
+        self.fromUserId = fromUserId
+        self.invitedUserId = invitedUserId
+        self.circleId = circleId
+
 class circleApplicationService:
     def __init__(self,circleFactory,circleRepository,circleService,userRepository):
         self.circleFactory = circleFactory
