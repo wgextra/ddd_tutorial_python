@@ -64,7 +64,7 @@ def test_circle_invite_command():
     assert cic.toUserId == "testInvitedUserId"
     assert cic.circleId == "testCircleId"
 
-class ImMemoryUserRepository(IUserRepository):
+class InMemoryUserRepository(IUserRepository):
     store = {
         "testUserId1":"testUserName1",
         "testUserId2":"testUserName2",
