@@ -35,9 +35,14 @@ class circle:
         self.owner = owner
         self.members = members
     def join(self,member):
-        if len(self.members) >= 29:
+        if self.isFull():
             raise ValueError("circle is full.")
         self.members.append(member)
+    def isFull(self):
+        return self.countMember() >= 30
+    # include owner when counting members
+    def countMember(self):
+        return len(self.members) + 1
 
 
 # entity for circleInvitation
@@ -144,5 +149,7 @@ class circleApplicationService:
         circle = self.circleRepository.findById(circleInviteCommand.circleId)
         if circle == None:
             raise ValueError("circle not found.")
+        if circle.isFull():
+            raise ValueError("circle is full.")
         circleInvite = circleInvitation(fromUserId,toUserId,circle)
         self.circleRepository.save(circleInvite)

@@ -1,12 +1,5 @@
 import pytest
-from circle_app import circleId
-from circle_app import circleName
-from circle_app import user
-from circle_app import circle
-from circle_app import circleInvitation
-from circle_app import circleCreateCommand
-from circle_app import circleJoinCommand
-from circle_app import circleInviteCommand
+from circle_app import *
 
 def test_circle_id():
     ci = circleId(123)
@@ -53,6 +46,7 @@ def test_circle():
     assert [member.name for member in ccl.members] == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3"]
     ccl.join(user("testCircleMemberId4"))
     assert [member.name for member in ccl.members] == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3","testCircleMemberId4"]
+    
 
 def test_circle_create_command():
     ccc = circleCreateCommand("testUserId","testCircleName")
@@ -69,3 +63,23 @@ def test_circle_invite_command():
     assert cic.fromUserId == "testFromUserId"
     assert cic.toUserId == "testInvitedUserId"
     assert cic.circleId == "testCircleId"
+
+class ImMemoryUserRepository(IUserRepository):
+    store = {
+        "testUserId1":"testUserName1",
+        "testUserId2":"testUserName2",
+        "testUserId3":"testUserName3",
+    }
+    def findById(self,userId):
+        if userId in self.store.keys():
+            return userId
+        else:
+            return None
+    
+    def findByName(self,userName):
+        matchedIds = [id for id,name in self.store.items() if name == userName]
+        return matchedIds[0]
+
+    def save(self,user):
+        self.store[user.id] = user(user.name,user.id)
+        
