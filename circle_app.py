@@ -19,14 +19,14 @@ class circleName:
         return otherCircleName.Value == self.Value
 
 # entity for user
-class user:
+class User:
     def __init__(self,name,id=None):
         if id == None:
             self.id = str(uuid.uuid4())
         else:
             self.id = id
         self.name = name
-
+        
 # entity for circle
 class circle:
     def __init__(self,id,name,owner,members):
@@ -153,3 +153,20 @@ class circleApplicationService:
             raise ValueError("circle is full.")
         circleInvite = circleInvitation(fromUserId,toUserId,circle)
         self.circleRepository.save(circleInvite)
+
+class UserService:
+    def __init__(self,userRepository):
+        self.userRepository = userRepository
+    def exists(self,user):
+        found = self.userRepository.findByName(user.name)
+        return found != None
+
+class Program:
+    def __init__(self,userRepository):
+        self.userRepository = userRepository
+    def createUser(self,userName):
+        userNew = User(userName)
+        userService = UserService(self.userRepository)
+        if(userService.exists(userNew)):
+            raise ValueError("user alread exists.")
+        self.userRepository.save(userNew)

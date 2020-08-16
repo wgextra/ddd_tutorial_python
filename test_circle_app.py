@@ -19,10 +19,10 @@ def test_circle_name():
         circleName("aaaaaaaaaaaaaaaaaaaaa")
 
 def test_user():
-    us = user(name="testUser")
+    us = User(name="testUser")
     assert us.name == "testUser"
     assert len(us.id) == 36
-    us2 = user(name="testUser2",id="testId")
+    us2 = User(name="testUser2",id="testId")
     assert us2.name == "testUser2"
     assert us2.id == "testId"
 
@@ -39,12 +39,12 @@ def test_circle_invitation():
     assert ci2.id == "testInvitationID"
 
 def test_circle():
-    ccl = circle(id="testCircleId",name="testCircleName",owner="testCircleOwnerId",members=[user("testCircleMemberId1"),user("testCircleMemberId2"),user("testCircleMemberId3")])
+    ccl = circle(id="testCircleId",name="testCircleName",owner="testCircleOwnerId",members=[User("testCircleMemberId1"),User("testCircleMemberId2"),User("testCircleMemberId3")])
     assert ccl.id == "testCircleId"
     assert ccl.name == "testCircleName"
     assert ccl.owner == "testCircleOwnerId"
     assert [member.name for member in ccl.members] == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3"]
-    ccl.join(user("testCircleMemberId4"))
+    ccl.join(User("testCircleMemberId4"))
     assert [member.name for member in ccl.members] == ["testCircleMemberId1","testCircleMemberId2","testCircleMemberId3","testCircleMemberId4"]
     
 
@@ -64,22 +64,27 @@ def test_circle_invite_command():
     assert cic.toUserId == "testInvitedUserId"
     assert cic.circleId == "testCircleId"
 
+def test_new_user_addition():
+    testUserRepository = InMemoryUserRepository()
+    testProgram = Program(testUserRepository)
+    testProgram.createUser("testUser1")
+    head = list(testUserRepository.store.values())[0].name
+    assert head == "testUser1"
+
 class InMemoryUserRepository(IUserRepository):
-    store = {
-        "testUserId1":"testUserName1",
-        "testUserId2":"testUserName2",
-        "testUserId3":"testUserName3",
-    }
+    def __init__(self):
+        self.store = {}
     def findById(self,userId):
         if userId in self.store.keys():
             return userId
         else:
             return None
-    
     def findByName(self,userName):
         matchedIds = [id for id,name in self.store.items() if name == userName]
-        return matchedIds[0]
-
+        if matchedIds == []:
+            return None
+        else: 
+            return matchedIds[0]
     def save(self,user):
-        self.store[user.id] = user(user.name,user.id)
+        self.store[user.id] = user
         
